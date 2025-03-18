@@ -33,7 +33,7 @@ You will build a simple **Loan Management System** with a **.NET Core backend (C
         "amount": 1500.00, // Amount requested
         "currentBalance": 500.00, // Remaining balance
         "applicantName": "Maria Silva", // User name
-        "status": "active" // Status can be active or paid off
+        "status": "active" // Status can be active or paid
     }
     ```
 
@@ -43,12 +43,17 @@ You will build a simple **Loan Management System** with a **.NET Core backend (C
 * **Dockerize** the backend and create a **Docker Compose** file.
 * Create a README with setup instructions.
 
-### **2. Frontend - Angular (Simplified UI)**
+### **2. Frontend - Angular (Simplified UI)**  
 
-* Create a **simple Angular app** to interact with the backend.
-* Implement:
-    * A **table** to list existing loans.
-    * A **detail page** to view loan information.
+Develop a **lightweight Angular app** to interact with the backend
+
+#### **Features:**  
+- A **table** to display a list of existing loans.  
+- A **detail page** to view loan information.  
+
+#### **Mockup:**  
+[View Mockup](https://kzmh5gxvol11bpzcifrm.lite.vusercontent.net/)  
+(*The design doesn’t need to be an exact replica of the mockup—it serves as a reference. Aim to keep it as close as possible.*)  
 
 ---
 
@@ -57,6 +62,7 @@ You will build a simple **Loan Management System** with a **.NET Core backend (C
 * **Improve error handling and logging** with structured logs.
 * Implement **authentication**.
 * Create a **GitHub Actions** pipeline for building and testing the backend.
+* Consider using libraries like **Material Design** to enhance the frontend UI.
 
 ---
 
