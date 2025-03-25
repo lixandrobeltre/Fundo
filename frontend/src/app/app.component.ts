@@ -19,22 +19,22 @@ export class AppComponent {
   ];
   loans = [
     {
-      loanAmount: 5000,
-      currentBalance: 2000,
+      loanAmount: 25000.00,
+      currentBalance: 18750.00,
       applicant: 'John Doe',
-      status: 'Approved',
+      status: 'active',
     },
     {
-      loanAmount: 10000,
-      currentBalance: 8000,
+      loanAmount: 15000.00,
+      currentBalance: 0,
       applicant: 'Jane Smith',
-      status: 'Pending',
+      status: 'paid',
     },
     {
-      loanAmount: 15000,
-      currentBalance: 12000,
-      applicant: 'Alice Johnson',
-      status: 'Rejected',
+      loanAmount: 50000.00,
+      currentBalance: 32500.00,
+      applicant: 'Robert Johnson',
+      status: 'active',
     },
   ];
 }
