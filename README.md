@@ -61,7 +61,6 @@ Develop a **lightweight Angular app** to interact with the backend
 * **Improve error handling and logging** with structured logs.
 * Implement **authentication**.
 * Create a **GitHub Actions** pipeline for building and testing the backend.
-* Consider using libraries like **Material Design** to enhance the frontend UI.
 
 ---
 
