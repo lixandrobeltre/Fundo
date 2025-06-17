@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fundo.Application.Interfaces
+﻿namespace Fundo.Application.Interfaces
 {
-    internal interface IPaymentService
+    public interface IPaymentService
     {
+        Task<bool> ProcessPaymentAsync(Guid loandId, decimal amount, string description);
     }
 }

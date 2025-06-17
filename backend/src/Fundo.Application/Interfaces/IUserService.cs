@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Fundo.Application.Dtos;
 
 namespace Fundo.Application.Interfaces
 {
-    internal interface IUserService
-    {
+    public interface IUserService
+    {   
+        Task<UserDto> ValidateUserAsync(string username, string password);
     }
 }

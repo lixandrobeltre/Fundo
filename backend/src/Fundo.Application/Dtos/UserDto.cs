@@ -10,8 +10,6 @@ public class UserDto
 
     public string Username { get; set; }
 
-    public string PasswordHash { get; set; }
-
     public bool Status { get; set; }
 
     public Guid RowId { get; set; }
