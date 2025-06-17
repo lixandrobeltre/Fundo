@@ -23,6 +23,8 @@ public partial class Loan
 
     public decimal InterestRate { get; set; }
 
+    public short Term { get; set; }
+
     public decimal PaymentAmount { get; set; }
 
     public short PaymentDay { get; set; }

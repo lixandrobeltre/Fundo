@@ -4,8 +4,8 @@ namespace Fundo.Application.Interfaces
 {
     internal interface ILoanService
     {
-        Task<LoanDto> GetLoanDetailsAsync(Guid loanId);
-        Task<IEnumerable<LoanDto>> GetAllLoansAsync();
-        Task<bool> CreateLoanAsync(LoanDto loanDto);
+        Task<LoanDto> GetLoanDetailsAsync(string code);
+        Task<IEnumerable<LoanDto>> GetAllLoansAsync(int page, int pageSize);
+        Task<Guid> CreateLoanAsync(CreateLoanDto loanDto);
     }
 }
