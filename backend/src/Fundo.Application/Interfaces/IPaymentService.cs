@@ -2,6 +2,6 @@
 {
     public interface IPaymentService
     {
-        Task<bool> ProcessPaymentAsync(Guid loandId, decimal amount, string description);
+        Task<bool> ProcessPaymentAsync(string loanCode, decimal amount, string description);
     }
 }
