@@ -1,0 +1,36 @@
+﻿### Host
+@host_address = https://localhost:61355
+
+### Create a new loan
+POST {{host_address}}/loans
+Content-Type: application/json
+
+{
+  "clientCode": "C001",
+  "loanType": "Personal",
+  "originalAmount": 1000,
+  "interestRate": 10,
+  "paymentDay": 1,
+  "term": 12
+}
+
+###
+
+### Get loan details by code
+GET {{host_address}}/loans/LN0007
+
+###
+
+### List all loans (paged)
+GET {{host_address}}/loans?page=1&pageSize=5
+
+###
+
+### Make a payment to a loan
+POST {{host_address}}/loans/L001/payment
+Content-Type: application/json
+
+{
+  "amount": 200,
+  "description": "Monthly payment"
+}
