@@ -1,11 +1,11 @@
-﻿using Fundo.Application.Dtos;
+﻿using FluentValidation;
+using Fundo.Application.Dtos;
 using Fundo.Application.Interfaces;
 using Fundo.Application.Validators;
 using Fundo.Domain.Enums;
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace Fundo.Application.Services
 {

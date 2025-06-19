@@ -1,13 +1,11 @@
-﻿using Fundo.Application.Dtos;
+﻿using FluentValidation;
+using Fundo.Application.Dtos;
 using Fundo.Application.Services;
 using Fundo.Application.Validators;
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -18,13 +16,13 @@ namespace Fundo.Services.Tests.Services
     {
         private readonly FundoLoanDbContext dbContext;
         private readonly LoanService loanService;
-        private readonly Mock<LoanValidator> validatorMock;
 
         public LoanServiceTests()
         {
             var options = new DbContextOptionsBuilder<FundoLoanDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
+
             dbContext = new FundoLoanDbContext(options);
 
             // Seed a client
@@ -39,14 +37,10 @@ namespace Fundo.Services.Tests.Services
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = "seed"
             });
+
             dbContext.SaveChanges();
 
-            // Mock LoanValidator
-            validatorMock = new Mock<LoanValidator>();
-            validatorMock.Setup(v => v.Validate(It.IsAny<CreateLoanDto>()))
-                .Returns(new ValidationResult(string.Empty));
-
-            loanService = new LoanService(dbContext, validatorMock.Object);
+            loanService = new LoanService(dbContext, new LoanValidator());
         }
 
         [Fact]
@@ -72,13 +66,7 @@ namespace Fundo.Services.Tests.Services
 
         [Fact]
         public async Task CreateLoanAsync_ThrowsValidationException_WhenInvalid()
-        {
-            // Arrange
-            validatorMock.Setup(v => v.Validate(It.IsAny<CreateLoanDto>()))
-                .Returns(new ValidationResult(new List<ValidationFailure> {
-                    new ValidationFailure("LoanType", "LoanType is required")
-                }));
-
+        {   
             var dto = new CreateLoanDto
             {
                 ClientCode = "C001",
@@ -170,3 +158,4 @@ namespace Fundo.Services.Tests.Services
             await Assert.ThrowsAsync<ValidationException>(() => loanService.GetLoanDetailsAsync("NON_EXISTENT"));
         }
     }
+}
