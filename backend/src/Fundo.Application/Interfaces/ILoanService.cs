@@ -2,7 +2,7 @@
 
 namespace Fundo.Application.Interfaces
 {
-    internal interface ILoanService
+    public interface ILoanService
     {
         Task<LoanDto> GetLoanDetailsAsync(string code);
         Task<IEnumerable<LoanDto>> GetAllLoansAsync(int page, int pageSize);
