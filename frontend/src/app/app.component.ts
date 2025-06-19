@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { Loan } from './models/loan.model';
+import { LoanService } from './services/loanService';
 
 @Component({
   selector: 'app-root',
@@ -11,30 +13,27 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  loans: Loan[] = [];
   displayedColumns: string[] = [
-    'loanAmount',
-    'currentBalance',
-    'applicant',
+    'clientCode',
+    'clientName',
+    'originalAmount',
+    'outstandingBalance',
+    'interestRate',
+    'paymentAmount',
     'status',
   ];
-  loans = [
-    {
-      loanAmount: 25000.00,
-      currentBalance: 18750.00,
-      applicant: 'John Doe',
-      status: 'active',
-    },
-    {
-      loanAmount: 15000.00,
-      currentBalance: 0,
-      applicant: 'Jane Smith',
-      status: 'paid',
-    },
-    {
-      loanAmount: 50000.00,
-      currentBalance: 32500.00,
-      applicant: 'Robert Johnson',
-      status: 'active',
-    },
-  ];
+
+  ngOnInit() {
+    this.loadLoans();
+  }
+
+  constructor(private readonly loanService: LoanService) {
+  }
+
+  loadLoans(page = 1, pageSize = 5) {
+    this.loanService.getLoans(page, pageSize).subscribe(loans => {
+      this.loans = loans;
+    });
+  }
 }
