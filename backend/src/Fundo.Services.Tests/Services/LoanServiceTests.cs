@@ -5,6 +5,8 @@ using Fundo.Application.Validators;
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace Fundo.Services.Tests.Services
     {
         private readonly FundoLoanDbContext dbContext;
         private readonly LoanService loanService;
+        private readonly Mock<ILogger<LoanService>> loggerMock;
 
         public LoanServiceTests()
         {
@@ -40,7 +43,8 @@ namespace Fundo.Services.Tests.Services
 
             dbContext.SaveChanges();
 
-            loanService = new LoanService(dbContext, new LoanValidator());
+            loggerMock = new Mock<ILogger<LoanService>>();
+            loanService = new LoanService(dbContext, new LoanValidator(), loggerMock.Object);
         }
 
         [Fact]
