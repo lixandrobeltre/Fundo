@@ -1,6 +1,9 @@
-﻿using Fundo.Application.Dtos;
+﻿using FluentValidation;
+using Fundo.Application.Dtos;
+using Fundo.Application.Exceptions;
 using Fundo.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Fundo.Applications.WebApi.Controllers
@@ -16,15 +19,38 @@ namespace Fundo.Applications.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] CreateClientDto dto)
         {
-            var client = await clientService.CreateClientAsync(dto);
-            return CreatedAtAction(nameof(GetClient), new { code = client.Code }, client);
+            try
+            {
+                var client = await clientService.CreateClientAsync(dto);
+                return CreatedAtAction(nameof(GetClient), new { code = client.Code }, client);
+            }
+            catch (ValidationException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred." });
+            }
         }
 
         [HttpGet("{code}")]
         public async Task<IActionResult> GetClient([FromRoute] string code)
         {
-            var client = await clientService.GetClient(code);
-            return Ok(client);
+            try
+            {
+                var client = await clientService.GetClient(code);
+                return Ok(client);
+
+            }
+            catch (NotFoundException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred." });
+            }
         }
     }
 }

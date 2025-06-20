@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 namespace Fundo.Applications.WebApi
 {
@@ -19,6 +21,13 @@ namespace Fundo.Applications.WebApi
         public Startup(IConfiguration configuration)
         {
             this.configuration = configuration;
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .WriteTo.MSSqlServer(
+                connectionString: configuration.GetSection("FundoLoan:ConnectionString").Value,
+                sinkOptions: new MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true })
+                .CreateLogger();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -49,6 +58,7 @@ namespace Fundo.Applications.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<Middleware.ExceptionHandlingMiddleware>();
             app.UseRouting();
             app.UseCors(nameof(Cors));
             app.UseAuthorization();

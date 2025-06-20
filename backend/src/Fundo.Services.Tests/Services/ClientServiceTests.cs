@@ -3,6 +3,8 @@ using Fundo.Application.Services;
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -13,6 +15,7 @@ namespace Fundo.Services.Tests.Services
     {
         private readonly FundoLoanDbContext dbContext;
         private readonly ClientService clientService;
+        private readonly Mock<ILogger<ClientService>> loggerMock;
 
         public ClientServiceTests()
         {
@@ -34,7 +37,8 @@ namespace Fundo.Services.Tests.Services
             });
             dbContext.SaveChanges();
 
-            clientService = new ClientService(dbContext);
+            loggerMock = new Mock<ILogger<ClientService>>();
+            clientService = new ClientService(dbContext, loggerMock.Object);
         }
 
         [Fact]
