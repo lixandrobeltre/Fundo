@@ -24,7 +24,7 @@ public class LoanDto
 
     public DateTime? PaymentDueDate { get; set; }
 
-    public DateTime LastPaymentDate { get; set; }
+    public DateTime? LastPaymentDate { get; set; }
 
     public Guid RowId { get; set; }
 }

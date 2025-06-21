@@ -85,3 +85,4 @@ karma.conf.js
 test-report/
 junit.xml
 mocha.json
+TestResults/

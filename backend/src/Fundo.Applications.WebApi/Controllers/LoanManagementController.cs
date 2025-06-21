@@ -20,7 +20,7 @@ namespace Fundo.Applications.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetLoanById([FromRoute] string id)
+        public async Task<IActionResult> GetLoanByCode([FromRoute] string id)
         {
             var loan = await loanService.GetLoanDetailsAsync(id);
             return Ok(loan);
@@ -29,8 +29,8 @@ namespace Fundo.Applications.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateLoan([FromBody] CreateLoanDto dto)
         {
-            var loanId = await loanService.CreateLoanAsync(dto);
-            return CreatedAtAction(nameof(GetLoanById), new { id = loanId }, new { id = loanId });
+            var code = await loanService.CreateLoanAsync(dto);
+            return CreatedAtAction(nameof(GetLoanByCode), new { id = code }, new { id = code });
         }
 
         [HttpGet]

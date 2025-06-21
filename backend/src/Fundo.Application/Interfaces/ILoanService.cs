@@ -6,6 +6,6 @@ namespace Fundo.Application.Interfaces
     {
         Task<LoanDto> GetLoanDetailsAsync(string code);
         Task<IEnumerable<LoanDto>> GetAllLoansAsync(int page, int pageSize);
-        Task<Guid> CreateLoanAsync(CreateLoanDto loanDto);
+        Task<string> CreateLoanAsync(CreateLoanDto loanDto);
     }
 }

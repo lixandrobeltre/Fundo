@@ -7,6 +7,7 @@ GO
 
 USE FundoLoanDb;
 
+
 CREATE USER usr_fundo FOR LOGIN usr_fundo;
 
 ALTER ROLE db_owner ADD MEMBER usr_fundo;
@@ -38,7 +39,7 @@ CREATE TABLE Loans(
 	,PaymentAmount NUMERIC(18,2) NOT NULL DEFAULT(0)
 	,PaymentDay SMALLINT NOT NULL
 	,PaymentDueDate DATETIME
-	,LastPaymentDate DATETIME NOT NULL
+	,LastPaymentDate DATETIME
 	,CreatedAt DATETIME NOT NULL DEFAULT(GETDATE())
 	,CreatedBy VARCHAR(50) NOT NULL
 	,ModifiedAt DATETIME

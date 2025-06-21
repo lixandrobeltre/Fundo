@@ -8,7 +8,7 @@ POST {{host_address}}/loans
 Content-Type: application/json
 
 {
-  "clientCode": "C001",
+  "clientCode": "CL0001",
   "loanType": "Personal",
   "originalAmount": 1000,
   "interestRate": 10,
@@ -45,11 +45,10 @@ POST {{host_address}}/clients
 Content-Type: application/json
 
 {
-  "code": "C001",
+  "code": "C00101",
   "identification": "123456789",
   "name": "John Doe",
   "email": "john.doe@example.com",
-  "createdBy": "admin"
 }
 
 ###

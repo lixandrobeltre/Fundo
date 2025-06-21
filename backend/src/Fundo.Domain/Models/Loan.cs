@@ -31,7 +31,7 @@ public partial class Loan
 
     public DateTime? PaymentDueDate { get; set; }
 
-    public DateTime LastPaymentDate { get; set; }
+    public DateTime? LastPaymentDate { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

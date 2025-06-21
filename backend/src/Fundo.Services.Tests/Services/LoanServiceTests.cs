@@ -4,6 +4,7 @@ using Fundo.Application.Services;
 using Fundo.Application.Validators;
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
+using Fundo.Services.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -31,7 +32,6 @@ namespace Fundo.Services.Tests.Services
             // Seed a client
             dbContext.Clients.Add(new Client
             {
-                Id = 1,
                 Code = "C001",
                 Identification = "123456789",
                 Name = "Test Client",
@@ -50,36 +50,21 @@ namespace Fundo.Services.Tests.Services
         [Fact]
         public async Task CreateLoanAsync_CreatesLoan_WhenValid()
         {
-            var dto = new CreateLoanDto
-            {
-                ClientCode = "C001",
-                LoanType = "Personal",
-                OriginalAmount = 1000m,
-                InterestRate = 10m,
-                PaymentDay = 1,
-                Term = 12
-            };
+            var dto = FakerData.GenerateLoanDto("C001");
 
-            var loanId = await loanService.CreateLoanAsync(dto);
+            var loanCode = await loanService.CreateLoanAsync(dto);
 
-            var loan = await dbContext.Loans.FirstOrDefaultAsync(l => l.RowId == loanId);
+            var loan = await dbContext.Loans.FirstOrDefaultAsync(l => l.Code == loanCode);
             Assert.NotNull(loan);
-            Assert.Equal("Personal", loan.LoanType);
-            Assert.Equal(1000m, loan.OriginalAmount);
+            Assert.Equal(dto.LoanType, loan.LoanType);
+            Assert.Equal(dto.OriginalAmount, loan.OriginalAmount);
         }
 
         [Fact]
-        public async Task CreateLoanAsync_ThrowsValidationException_WhenInvalid()
+        public async Task CreateLoanAsync_ThrowsValidationException_WhenInvalid_LoanType()
         {   
-            var dto = new CreateLoanDto
-            {
-                ClientCode = "C001",
-                LoanType = null,
-                OriginalAmount = 1000m,
-                InterestRate = 10m,
-                PaymentDay = 1,
-                Term = 12
-            };
+            var dto = FakerData.GenerateLoanDto("C001");
+            dto.LoanType = string.Empty; 
 
             // Act & Assert
             await Assert.ThrowsAsync<ValidationException>(() => loanService.CreateLoanAsync(dto));
@@ -88,15 +73,7 @@ namespace Fundo.Services.Tests.Services
         [Fact]
         public async Task CreateLoanAsync_ThrowsValidationException_WhenClientNotFound()
         {
-            var dto = new CreateLoanDto
-            {
-                ClientCode = "NON_EXISTENT",
-                LoanType = "Personal",
-                OriginalAmount = 1000m,
-                InterestRate = 10m,
-                PaymentDay = 1,
-                Term = 12
-            };
+            var dto = FakerData.GenerateLoanDto("NON_EXISTENT");
 
             await Assert.ThrowsAsync<ValidationException>(() => loanService.CreateLoanAsync(dto));
         }

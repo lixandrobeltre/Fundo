@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Fundo.Application.Dtos;
-using Fundo.Application.Exceptions;
 using Fundo.Application.Interfaces;
 using Fundo.Application.Validators;
 using Fundo.Domain.Enums;
@@ -24,7 +23,7 @@ namespace Fundo.Application.Services
             this.logger = logger;
         }
 
-        public async Task<Guid> CreateLoanAsync(CreateLoanDto loanDto)
+        public async Task<string> CreateLoanAsync(CreateLoanDto loanDto)
         {
             try
             {
@@ -38,6 +37,7 @@ namespace Fundo.Application.Services
 
                 var loan = new Loan
                 {
+                    IdClient = client.Id,
                     Code = $"LN-{Guid.NewGuid().ToString()[..8]}",
                     LoanType = loanDto.LoanType,
                     Status = LoanStatus.Active.ToString(),
@@ -54,7 +54,7 @@ namespace Fundo.Application.Services
 
                 dbContext.Loans.Add(loan);
                 await dbContext.SaveChangesAsync();
-                return loan.RowId;
+                return loan.Code;
             }
             catch (Exception e) when (e is not ValidationException)
             {
