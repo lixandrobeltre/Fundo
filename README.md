@@ -1,83 +1,71 @@
-# **Take-Home Test: Backend-Focused Full-Stack Developer (.NET C# & Angular)**
+# Fundo Solution
 
-## **Objective**
+This repository contains the **Fundo** project, a full-stack application with a .NET backend and an Angular frontend. The solution is organized into two main parts:
 
-This take-home test evaluates your ability to develop and integrate a .NET Core (C#) backend with an Angular frontend, focusing on API design, database integration, and basic DevOps practices.
+- **backend/**: ASP.NET Core Web API, domain logic, infrastructure, and tests
+- **frontend/**: Angular application
 
-## **Instructions**
+---
+### Project Structure
 
-1.  **Fork the provided repository** before starting the implementation.
-2.  Implement the requested features in your forked repository.
-3.  Once you have completed the implementation, **send the link** to your forked repository via email for review.
+```
+├── backend/
+│   └── src/
+│       ├── Fundo.Application/
+│       ├── Fundo.Applications.WebApi/
+│       ├── Fundo.Domain/
+│       ├── Fundo.Infraestructure/
+│       ├── Fundo.Services.Tests/
+│       └── Fundo.sln
+├── frontend/
+│   ├── src/
+│   ├── angular.json
+│   └── package.json
+├── scripts/
+│   ├── db.sql
+│   └── sample_data.sql 
+```
 
-## **Task**
+---
+### Setup Database
 
-You will build a simple **Loan Management System** with a **.NET Core backend (C#)** exposing RESTful APIs and a **basic Angular frontend** consuming these APIs.
+The `db.sql` script creates the FundoLoanDb database, sets up the required tables, and creates a SQL user with the necessary permissions for the application to connect and operate.. You can do this using SQL Server Management Studio or the `sqlcmd` utility.
 
 ---
 
-## **Requirements**
+### Setup Connection String (using dotnet user-secrets)
 
-### **1. Backend (API) - .NET Core**
+To securely set your database connection string for local development, use [dotnet user-secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets):
 
-* Create a **RESTful API** in .NET Core to handle **loan applications**.
-* Implement the following endpoints:
-    * `POST /loans` → Create a new loan.
-    * `GET /loans/{id}` → Retrieve loan details.
-    * `GET /loans` → List all loans.
-    * `POST /loans/{id}/payment` → Deduct from `currentBalance`.
-* Loan example (feel free to improve it):
+```sh
+cd backend/src/Fundo.Applications.WebApi
+dotnet user-secrets init
+dotnet user-secrets set "FundoLoan:ConnectionString" "Server=;Database=FundoLoanDb;User Id=<User Id>;Password=<Password>;MultipleActiveResultSets=true;TrustServerCertificate=true"
+```
 
-    ```json
-    {
-        "amount": 1500.00, // Amount requested
-        "currentBalance": 500.00, // Remaining balance
-        "applicantName": "Maria Silva", // User name
-        "status": "active" // Status can be active or paid
-    }
-    ```
-
-* Use **Entity Framework Core** with **SQL Server**.
-* Create seed data to populate the loans (the frontend will consume this).
-* Write **unit/integration tests for the API** (xUnit or NUnit).
-* **Dockerize** the backend and create a **Docker Compose** file.
-* Create a README with setup instructions.
-
-### **2. Frontend - Angular (Simplified UI)**  
-
-Develop a **lightweight Angular app** to interact with the backend
-
-#### **Features:**  
-- A **table** to display a list of existing loans.  
-
-#### **Mockup:**  
-[View Mockup](https://kzmgtjqt0vx63yji8h9l.lite.vusercontent.net/)  
-(*The design doesn’t need to be an exact replica of the mockup—it serves as a reference. Aim to keep it as close as possible.*)  
+Replace `<User Id>` and `<Password>` with your actual credentials.
 
 ---
 
-## **Bonus (Optional, Not Required)**
+## Backend
 
-* **Improve error handling and logging** with structured logs.
-* Implement **authentication**.
-* Create a **GitHub Actions** pipeline for building and testing the backend.
+Located in [`backend/src`](backend/src/README.md), the backend is a .NET solution with the following projects:
 
----
+- **Fundo.Applications.WebApi**: Main ASP.NET Core Web API project
+- **Fundo.Application**: Application layer (business logic, services)
+- **Fundo.Domain**: Domain models and interfaces
+- **Fundo.Infraestructure**: Data access, repositories, and infrastructure services
+- **Fundo.Services.Tests**: Unit and integration tests
 
-## **Evaluation Criteria**
+### Build & Run
 
-✔ **Code quality** (clean architecture, modularization, best practices).
+To build and run the backend API:
 
-✔ **Functionality** (the API and frontend should work as expected).
+```sh
+cd backend/src
+dotnet build
+cd Fundo.Applications.WebApi
+dotnet run
+```
 
-✔ **Security considerations** (authentication, validation, secure API handling).
-
-✔ **Testing coverage** (unit tests for critical backend functions).
-
-✔ **Basic DevOps implementation** (Docker for backend).
-
----
-
-## **Additional Information**
-
-Candidates are encouraged to include a `README.md` file in their repository detailing their implementation approach, any challenges they faced, features they couldn't complete, and any improvements they would make given more time. Ideally, the implementation should be completed within **two days** of starting the test.
+The API will be available at `https://localhost:61355` by default.
