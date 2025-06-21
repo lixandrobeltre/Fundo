@@ -7,7 +7,6 @@ GO
 
 USE FundoLoanDb;
 
-
 CREATE USER usr_fundo FOR LOGIN usr_fundo;
 
 ALTER ROLE db_owner ADD MEMBER usr_fundo;

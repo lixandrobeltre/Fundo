@@ -1,0 +1,9 @@
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+USER root
+COPY ./db/entrypoint.sh /entrypoint.sh
+COPY ./db/init.sql /init.sql
+COPY ./db/sample_data.sql /sample_data.sql
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

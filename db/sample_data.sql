@@ -1,3 +1,5 @@
+USE FundoLoanDb;
+
 INSERT INTO Clients (Code, Identification, Name, Email, CreatedAt, CreatedBy, ModifiedAt, ModifiedBy, RowId) VALUES ('CL0001', '749380620', 'Client 1', 'client1@example.com', '2022-06-13 00:00:00', 'admin', NULL, NULL, 'b43ee96c-c4d9-4314-b41d-f3faa82b48f7');
 INSERT INTO Clients (Code, Identification, Name, Email, CreatedAt, CreatedBy, ModifiedAt, ModifiedBy, RowId) VALUES ('CL0002', '654114696', 'Client 2', 'client2@example.com', '2020-09-28 00:00:00', 'admin', NULL, NULL, 'd0d57ab4-ff79-4704-805a-783c64f43367');
 INSERT INTO Clients (Code, Identification, Name, Email, CreatedAt, CreatedBy, ModifiedAt, ModifiedBy, RowId) VALUES ('CL0003', '222435718', 'Client 3', 'client3@example.com', '2022-05-31 00:00:00', 'admin', NULL, NULL, '6d3b811c-15d4-479d-8d2b-53e31a8f0c48');

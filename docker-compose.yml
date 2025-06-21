@@ -1,0 +1,33 @@
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile.mssql
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${DB_SA_PASSWORD}
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend/src
+      dockerfile: Fundo.Applications.WebApi/Dockerfile
+    container_name: fundo-api
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${DOTNET_ENVIRONMENT}
+      - FundoLoan__ConnectionString=Server=db;Database=${DB_NAME};User Id=sa;Password=${DB_SA_PASSWORD};MultipleActiveResultSets=true;TrustServerCertificate=true;
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
