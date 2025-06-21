@@ -19,7 +19,7 @@ services:
       dockerfile: Fundo.Applications.WebApi/Dockerfile
     container_name: fundo-api
     ports:
-      - "5000:5000"
+      - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=${DOTNET_ENVIRONMENT}
       - FundoLoan__ConnectionString=Server=db;Database=${DB_NAME};User Id=sa;Password=${DB_SA_PASSWORD};MultipleActiveResultSets=true;TrustServerCertificate=true;
