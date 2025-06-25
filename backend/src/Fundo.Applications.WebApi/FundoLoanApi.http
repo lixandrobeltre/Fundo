@@ -57,3 +57,12 @@ Content-Type: application/json
 GET {{host_address}}/clients/C001
 
 ###
+
+
+### ********************* AUTH ********************* ###
+
+### Authenticate - Get JWT Token
+POST {{host_address}}/Auth/Authenticate
+Content-Type: application/x-www-form-urlencoded
+
+username=client1&password=secret
