@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 
 namespace Fundo.Applications.WebApi.Controllers
 {
-    public class AuthController : Controller
+    [ApiController]
+    [Route("/auth")]
+    public class AuthController : ControllerBase
     {
         private readonly IUserService userService;
         private readonly ILogger<AuthController> logger;
@@ -24,13 +26,14 @@ namespace Fundo.Applications.WebApi.Controllers
             this.configuration = configuration;
         }
 
+        [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromForm] string username, [FromForm] string password)
         {
 
             try
             {
                 var user = await userService.ValidateUserAsync(username, password);
-                
+
                 var claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, user.RowId.ToString()),
