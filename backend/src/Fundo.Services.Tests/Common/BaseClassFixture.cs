@@ -21,6 +21,8 @@ namespace Fundo.Services.Tests.Common
         protected HttpClient Client { get; init; }
         protected IServiceScope ServiceScope { get; init; }
 
+        private bool seeded = false;
+
         protected BaseClassFixture(TestWebApplicationFactory applicationFactory)
         {
             Client = applicationFactory.CreateClient(new WebApplicationFactoryClientOptions
@@ -31,11 +33,12 @@ namespace Fundo.Services.Tests.Common
             });
 
             ServiceScope = applicationFactory.Services.CreateScope();
-            Seed();
         }
 
         protected async Task<AuthenticationHeaderValue> GetToken()
         {
+            await this.EnsureSeededAsync();
+
             var authResponse = await this.Client.PostAsync("/auth/authenticate",
                 new FormUrlEncodedContent([
                     new KeyValuePair<string, string>("username", this.UsernameTest),
@@ -49,10 +52,19 @@ namespace Fundo.Services.Tests.Common
             return new AuthenticationHeaderValue(response.Token_type, response.Access_token);
         }
 
-        void Seed()
+        protected async Task EnsureSeededAsync()
+        {
+            if (!seeded)
+            {
+                await SeedAsync();
+                seeded = true;
+            }
+        }
+
+        async Task SeedAsync()
         {
             var db = ServiceScope.ServiceProvider.GetRequiredService<FundoLoanDbContext>();
-            db.Database.EnsureCreated();
+            await db.Database.EnsureCreatedAsync();
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(this.PasswordTest);
             var faker = new Faker();
@@ -69,7 +81,7 @@ namespace Fundo.Services.Tests.Common
                 CreatedBy = "seed"
             });
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         public void Dispose()

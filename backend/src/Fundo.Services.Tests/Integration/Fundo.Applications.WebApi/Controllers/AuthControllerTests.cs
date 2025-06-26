@@ -21,6 +21,8 @@ public class AuthControllerTests : BaseClassFixture
             new KeyValuePair<string, string>("password", this.PasswordTest)
             ]);
 
+        await this.EnsureSeededAsync();
+
         // Act
         var response = await this.Client.PostAsync("/auth/Authenticate", content);
 

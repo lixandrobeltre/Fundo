@@ -29,7 +29,8 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       working-directory: backend/src
-      timeout-minutes: 10
+      timeout-minutes: 5
       env:
         TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
         TESTCONTAINERS_RYUK_DISABLED: true
+        ASPNETCORE_ENVIRONMENT: Testing
