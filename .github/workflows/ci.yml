@@ -30,4 +30,6 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       working-directory: backend/src
       timeout-minutes: 10
-      
+      env:
+        TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
+        TESTCONTAINERS_RYUK_DISABLED: true
