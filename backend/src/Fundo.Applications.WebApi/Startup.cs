@@ -3,6 +3,7 @@ using Fundo.Application.Interfaces;
 using Fundo.Application.Services;
 using Fundo.Application.Validators;
 using Fundo.Applications.WebApi.Models;
+using Fundo.Applications.WebApi.Services;
 using Fundo.Infraestructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,6 +44,10 @@ namespace Fundo.Applications.WebApi
             services.AddScoped<ILoanService, LoanService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILogin, LoginService>();
+
+            services.Configure<JwtOption>(configuration.GetSection("Jwt"));
+            services.AddHttpContextAccessor();
 
             var corsOptions = new Cors();
             configuration.GetSection("Cors").Bind(corsOptions);
@@ -57,6 +62,9 @@ namespace Fundo.Applications.WebApi
                 });
             });
 
+
+            var jwtSettings = configuration.GetSection("Jwt").Get<JwtOption>();
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
@@ -65,9 +73,9 @@ namespace Fundo.Applications.WebApi
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        ValidIssuer = "OAuthJwtFundo",
-                        ValidAudience = "OAuthJwtFundoClient",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("SecurityKey").Value)) 
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("SecurityKey").Value))
                     };
                 });
         }

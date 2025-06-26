@@ -1,4 +1,5 @@
 ﻿using Fundo.Application.Exceptions;
+using Fundo.Application.Interfaces;
 using Fundo.Application.Services;
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
@@ -16,6 +17,7 @@ namespace Fundo.Services.Tests.Services
         private readonly FundoLoanDbContext dbContext;
         private readonly ClientService clientService;
         private readonly Mock<ILogger<ClientService>> loggerMock;
+        private readonly Mock<ILogin> loginMock;
 
         public ClientServiceTests()
         {
@@ -38,7 +40,8 @@ namespace Fundo.Services.Tests.Services
             dbContext.SaveChanges();
 
             loggerMock = new Mock<ILogger<ClientService>>();
-            clientService = new ClientService(dbContext, loggerMock.Object);
+            loginMock = new Mock<ILogin>();
+            clientService = new ClientService(dbContext, loggerMock.Object, loginMock.Object);
         }
 
         [Fact]

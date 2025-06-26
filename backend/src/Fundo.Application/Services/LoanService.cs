@@ -15,12 +15,14 @@ namespace Fundo.Application.Services
         private readonly FundoLoanDbContext dbContext;
         private readonly LoanValidator validations;
         private readonly ILogger<LoanService> logger;
+        private readonly ILogin login;
 
-        public LoanService(FundoLoanDbContext dbContext, LoanValidator validations, ILogger<LoanService> logger)
+        public LoanService(FundoLoanDbContext dbContext, LoanValidator validations, ILogger<LoanService> logger, ILogin login)
         {
             this.dbContext = dbContext;
             this.validations = validations;
             this.logger = logger;
+            this.login = login;
         }
 
         public async Task<string> CreateLoanAsync(CreateLoanDto loanDto)
@@ -48,7 +50,7 @@ namespace Fundo.Application.Services
                     PaymentDay = loanDto.PaymentDay,
                     Term = loanDto.Term,
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = "system", // TODO: Replace with actual user context
+                    CreatedBy = login.GetUsername(),
                     RowId = Guid.NewGuid()
                 };
 

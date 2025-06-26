@@ -1,5 +1,4 @@
-﻿using Fundo.Applications.WebApi;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Fundo.Services.Tests.Common;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -8,29 +7,22 @@ using Xunit;
 
 namespace Fundo.Services.Tests.Integration;
 
-public class AuthControllerTests : IClassFixture<WebApplicationFactory<Startup>>
+public class AuthControllerTests : BaseClassFixture
 {
-    private readonly HttpClient client;
 
-    public AuthControllerTests(WebApplicationFactory<Startup> factory)
-    {
-        client = factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false
-        });
-    }
+    public AuthControllerTests(TestWebApplicationFactory applicationFactory) : base(applicationFactory) { }
 
     [Fact]
     public async Task Authenticate_ValidCredentials_ReturnsJwtToken()
     {
         // Arrange
         var content = new FormUrlEncodedContent([
-            new KeyValuePair<string, string>("username", "validuser"),
-            new KeyValuePair<string, string>("password", "validpass")
+            new KeyValuePair<string, string>("username", this.UsernameTest),
+            new KeyValuePair<string, string>("password", this.PasswordTest)
             ]);
 
         // Act
-        var response = await client.PostAsync("/auth/Authenticate", content);
+        var response = await this.Client.PostAsync("/auth/Authenticate", content);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -49,7 +41,7 @@ public class AuthControllerTests : IClassFixture<WebApplicationFactory<Startup>>
             ]);
 
         // Act
-        var response = await client.PostAsync("/auth/Authenticate", content);
+        var response = await this.Client.PostAsync("/auth/Authenticate", content);
 
         // Assert
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);

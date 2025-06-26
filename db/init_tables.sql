@@ -1,16 +1,3 @@
-USE master;
-
-CREATE DATABASE FundoLoanDb
-
-CREATE LOGIN usr_fundo WITH PASSWORD = 'qFPz1VPvKzfE4LC!';
-GO
-
-USE FundoLoanDb;
-
-CREATE USER usr_fundo FOR LOGIN usr_fundo;
-
-ALTER ROLE db_owner ADD MEMBER usr_fundo;
-GO
 
 CREATE TABLE Clients(
 	Id INT NOT NULL PRIMARY KEY IDENTITY(1,1)

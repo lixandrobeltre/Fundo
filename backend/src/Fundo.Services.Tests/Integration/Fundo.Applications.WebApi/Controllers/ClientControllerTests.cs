@@ -1,25 +1,16 @@
 using Bogus;
 using Fundo.Application.Dtos;
-using Microsoft.AspNetCore.Mvc.Testing;
+using Fundo.Services.Tests.Common;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Fundo.Services.Tests.Integration;
 
-public class ClientControllerTests : IClassFixture<WebApplicationFactory<Applications.WebApi.Startup>>
+public class ClientControllerTests : BaseClassFixture
 {
-    private readonly HttpClient _client;
-
-    public ClientControllerTests(WebApplicationFactory<Applications.WebApi.Startup> factory)
-    {
-        _client = factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            AllowAutoRedirect = false
-        });
-    }
+    public ClientControllerTests(TestWebApplicationFactory applicationFactory) : base(applicationFactory) { }
 
     [Fact]
     public async Task CreateClient_ReturnsCreated()
@@ -35,7 +26,8 @@ public class ClientControllerTests : IClassFixture<WebApplicationFactory<Applica
         };
 
         // Act
-        var response = await _client.PostAsJsonAsync("/clients", dto);
+        this.Client.DefaultRequestHeaders.Authorization = await this.GetToken();
+        var response = await Client.PostAsJsonAsync("/clients", dto);
 
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -57,10 +49,13 @@ public class ClientControllerTests : IClassFixture<WebApplicationFactory<Applica
             Name = faker.Name.FullName(),
             Email = faker.Internet.Email()
         };
-        await _client.PostAsJsonAsync("/clients", dto);
+
+        this.Client.DefaultRequestHeaders.Authorization = await this.GetToken();
+        await Client.PostAsJsonAsync("/clients", dto);
 
         // Act
-        var response = await _client.GetAsync($"/clients/{dto.Code}");
+        this.Client.DefaultRequestHeaders.Authorization = await this.GetToken();
+        var response = await Client.GetAsync($"/clients/{dto.Code}");
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -69,5 +64,4 @@ public class ClientControllerTests : IClassFixture<WebApplicationFactory<Applica
         Assert.Equal(dto.Code, client.Code);
         Assert.Equal(dto.Name, client.Name);
     }
-
 }

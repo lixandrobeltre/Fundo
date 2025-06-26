@@ -1,8 +1,10 @@
-﻿using Fundo.Application.Services;
+﻿using Fundo.Application.Interfaces;
+using Fundo.Application.Services;
 using Fundo.Domain.Enums;
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace Fundo.Services.Tests.Services
     {
         private readonly FundoLoanDbContext dbContext;
         private readonly PaymentService paymentService;
+        private readonly Mock<ILogin> loginMock;
 
         public PaymentServiceTests()
         {
@@ -53,7 +56,10 @@ namespace Fundo.Services.Tests.Services
             dbContext.Loans.Add(loan);
             dbContext.SaveChanges();
 
-            paymentService = new PaymentService(dbContext);
+            loginMock = new Mock<ILogin>();
+            loginMock.Setup(l => l.GetUsername()).Returns("testuser");
+
+            paymentService = new PaymentService(dbContext, loginMock.Object);
         }
 
         [Fact]
@@ -64,14 +70,14 @@ namespace Fundo.Services.Tests.Services
 
             // Assert
             Assert.True(result);
-            
+
             var loan = await dbContext.Loans.FirstOrDefaultAsync(l => l.Code == "L001");
             Assert.NotNull(loan);
             Assert.True(loan.OutstandingBalance < 1000m);
-            Assert.Equal("Active", loan.Status); 
+            Assert.Equal("Active", loan.Status);
 
             var payment = await dbContext.Payments.FirstOrDefaultAsync(p => p.IdLoan == loan.Id);
-            
+
             Assert.NotNull(payment);
             Assert.Equal(200m, payment.PaymentAmount);
             Assert.Equal("First payment", payment.Description);

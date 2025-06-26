@@ -13,11 +13,13 @@ namespace Fundo.Application.Services
     {
         private readonly FundoLoanDbContext dbContext;
         private readonly ILogger<ClientService> logger;
+        private readonly ILogin login;
 
-        public ClientService(FundoLoanDbContext dbContext, ILogger<ClientService> logger)
+        public ClientService(FundoLoanDbContext dbContext, ILogger<ClientService> logger, ILogin login)
         {
             this.dbContext = dbContext;
             this.logger = logger;
+            this.login = login;
         }
 
         public async Task<ClientDto> GetClient(string code)
@@ -60,7 +62,7 @@ namespace Fundo.Application.Services
                     Name = dto.Name,
                     Email = dto.Email,
                     CreatedAt = DateTime.UtcNow,
-                    CreatedBy = "system",
+                    CreatedBy = login.GetUsername(),
                     RowId = Guid.NewGuid()
                 };
 

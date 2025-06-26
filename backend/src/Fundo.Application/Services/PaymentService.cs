@@ -9,10 +9,12 @@ namespace Fundo.Application.Services
     public class PaymentService : IPaymentService
     {
         private readonly FundoLoanDbContext dbContext;
+        private readonly ILogin login;
 
-        public PaymentService(FundoLoanDbContext dbContext)
+        public PaymentService(FundoLoanDbContext dbContext, ILogin login)
         {
             this.dbContext = dbContext;
+            this.login = login;
         }
 
         public async Task<bool> ProcessPaymentAsync(string loanCode, decimal amount, string description)
@@ -34,14 +36,14 @@ namespace Fundo.Application.Services
                 PrincipalPayment = principalPayment,
                 InterestPayment = interestPayment,
                 CreatedAt = DateTime.UtcNow,
-                CreatedBy = "system", 
+                CreatedBy = login.GetUsername(),
                 RowId = Guid.NewGuid()
             };
 
             loan.OutstandingBalance -= principalPayment;
             loan.LastPaymentDate = DateTime.UtcNow;
             loan.ModifiedAt = DateTime.UtcNow;
-            loan.ModifiedBy = "system";
+            loan.ModifiedBy = login.GetUsername();
 
             if (loan.OutstandingBalance <= 0)
             {

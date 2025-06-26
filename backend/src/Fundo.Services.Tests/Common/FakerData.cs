@@ -20,7 +20,8 @@ namespace Fundo.Services.Tests.Common
             return loanDto;
         }
 
-        public static CreateClientDto GenerateClientDto() {
+        public static CreateClientDto GenerateClientDto()
+        {
             var clientFaker = new Faker<CreateClientDto>()
                 .RuleFor(c => c.Code, f => f.Random.AlphaNumeric(8))
                 .RuleFor(c => c.Identification, f => f.Random.AlphaNumeric(12))

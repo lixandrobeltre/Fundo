@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Fundo.Application.Dtos;
+using Fundo.Application.Interfaces;
 using Fundo.Application.Services;
 using Fundo.Application.Validators;
 using Fundo.Domain.Models;
@@ -20,6 +20,7 @@ namespace Fundo.Services.Tests.Services
         private readonly FundoLoanDbContext dbContext;
         private readonly LoanService loanService;
         private readonly Mock<ILogger<LoanService>> loggerMock;
+        private readonly Mock<ILogin> loginMock;
 
         public LoanServiceTests()
         {
@@ -44,7 +45,10 @@ namespace Fundo.Services.Tests.Services
             dbContext.SaveChanges();
 
             loggerMock = new Mock<ILogger<LoanService>>();
-            loanService = new LoanService(dbContext, new LoanValidator(), loggerMock.Object);
+            loginMock = new Mock<ILogin>();
+            loginMock.Setup(l => l.GetUsername()).Returns("testuser");
+
+            loanService = new LoanService(dbContext, new LoanValidator(), loggerMock.Object, loginMock.Object);
         }
 
         [Fact]
@@ -62,9 +66,9 @@ namespace Fundo.Services.Tests.Services
 
         [Fact]
         public async Task CreateLoanAsync_ThrowsValidationException_WhenInvalid_LoanType()
-        {   
+        {
             var dto = FakerData.GenerateLoanDto("C001");
-            dto.LoanType = string.Empty; 
+            dto.LoanType = string.Empty;
 
             // Act & Assert
             await Assert.ThrowsAsync<ValidationException>(() => loanService.CreateLoanAsync(dto));
