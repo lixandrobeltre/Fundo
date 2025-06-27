@@ -38,7 +38,9 @@ namespace Fundo.Applications.WebApi
             services.AddControllers();
             services.AddValidatorsFromAssemblyContaining<LoanValidator>();
 
-            services.AddDbContext<FundoLoanDbContext>(op => op.UseSqlServer(configuration.GetSection("FundoLoan:ConnectionString").Value));
+            services.AddDbContext<FundoLoanDbContext>(op => op.UseSqlServer(
+                configuration.GetSection("FundoLoan:ConnectionString").Value,
+                options => options.MigrationsAssembly("Fundo.Infraestructure")));
 
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<ILoanService, LoanService>();
