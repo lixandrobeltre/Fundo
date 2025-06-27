@@ -23,7 +23,6 @@ jobs:
 
     - name: Install EF Core tools
       run: dotnet tool install --global dotnet-ef
-
     
     - name: Restore dependencies
       run: dotnet restore
