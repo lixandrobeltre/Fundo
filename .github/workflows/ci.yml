@@ -33,7 +33,7 @@ jobs:
       working-directory: backend/src
 
     - name: Apply EF Core Migrations
-      run: dotnet ef database update --project Fundo.Infraestructure --startup-project Fundo.Applications.WebApi
+      run: dotnet ef migrations add InitialCreate --project Fundo.Infraestructure --startup-project Fundo.Applications.WebApi      
       working-directory: backend/src
           
     - name: Test
