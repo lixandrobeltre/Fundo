@@ -24,9 +24,6 @@ jobs:
     - name: Install EF Core tools
       run: dotnet tool install --global dotnet-ef
 
-    - name: Apply EF Core Migrations
-      run: dotnet ef database update --project Fundo.Infraestructure --startup-project backend/src/Fundo.Applications.WebApi
-      working-directory: backend/src
     
     - name: Restore dependencies
       run: dotnet restore
@@ -35,7 +32,11 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: backend/src
-      
+
+    - name: Apply EF Core Migrations
+      run: dotnet ef database update --project Fundo.Infraestructure --startup-project Fundo.Applications.WebApi
+      working-directory: backend/src
+          
     - name: Test
       run: dotnet test --verbosity normal
       working-directory: backend/src
