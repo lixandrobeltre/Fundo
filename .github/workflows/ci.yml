@@ -13,6 +13,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
     steps:
     - uses: actions/checkout@v4
@@ -44,3 +46,4 @@ jobs:
         TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
         TESTCONTAINERS_RYUK_DISABLED: true
         ASPNETCORE_ENVIRONMENT: Testing
+        SecurityKey: "MyTestSecretKeyForJWTTokenSigningThatNeedsToBeAtLeast256BitsLong123456789"
