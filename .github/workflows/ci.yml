@@ -20,8 +20,11 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
-    - name: Clean
-      run: dotnet clean
+    - name: Clean solution
+      run: |
+        dotnet clean
+        find . -name "bin" -type d -exec rm -rf {} + 2>/dev/null || true
+        find . -name "obj" -type d -exec rm -rf {} + 2>/dev/null || true
       working-directory: backend/src
     - name: Restore dependencies
       run: dotnet restore
