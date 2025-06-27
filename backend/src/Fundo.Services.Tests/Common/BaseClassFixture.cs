@@ -2,6 +2,7 @@
 using Fundo.Domain.Models;
 using Fundo.Infraestructure.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace Fundo.Services.Tests.Common
         async Task SeedAsync()
         {
             var db = ServiceScope.ServiceProvider.GetRequiredService<FundoLoanDbContext>();
-            await db.Database.EnsureCreatedAsync();
+            await db.Database.MigrateAsync();
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(this.PasswordTest);
             var faker = new Faker();
