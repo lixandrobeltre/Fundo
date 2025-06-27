@@ -39,7 +39,9 @@ namespace Fundo.Services.Tests.Common
                 if (serviceDescriptor != null)
                     services.Remove(serviceDescriptor);
 
-                services.AddDbContext<FundoLoanDbContext>(op => op.UseSqlServer(dbContainer.GetConnectionString()));
+                services.AddDbContext<FundoLoanDbContext>(op => op.UseSqlServer(
+                    dbContainer.GetConnectionString(),
+                    options => options.MigrationsAssembly("Fundo.Infraestructure")));
             });
         }
 
