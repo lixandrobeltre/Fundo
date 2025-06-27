@@ -1,0 +1,76 @@
+﻿### Host
+@host_address = http://localhost:61356
+
+### ********************* AUTH ********************* ###
+
+### Authenticate - Get JWT Token
+POST {{host_address}}/auth/authenticate
+Content-Type: application/x-www-form-urlencoded
+
+username=usr_local&password=local_testing!
+
+
+### ********************* LOAN ********************* ###
+
+### Create a new loan
+POST {{host_address}}/loans
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9naXZlbm5hbWUiOiJ1c3JfbG9jYWwiLCJhY3RvcnQiOiJ1c3JfbG9jYWwiLCJzdWIiOiJ1c3JfbG9jYWwiLCJuYW1lIjoiRm9yX3Rlc3QiLCJqdGkiOiJlYTFmYTE2YS1hYzVlLTQ3ZTAtYTdmZS00YjY2ODgzNTQxYTUiLCJleHAiOjE3NTA5MTQwODQsImlzcyI6Imh0dHBzOi8vZnVuZG8tYXBpLmNvbSIsImF1ZCI6ImZvdW5kby1hcGktY2xpZW50In0.Z-CdpP3gLCW-4SV_Pgu1nML2SSqf9NxZqC4dXccwA9M
+
+{
+  "clientCode": "CL0001",
+  "loanType": "Personal",
+  "originalAmount": 1000,
+  "interestRate": 10,
+  "paymentDay": 1,
+  "term": 12
+}
+
+###
+
+### Get loan details by code
+GET {{host_address}}/loans/LN0007
+Authorization: Bearer {{token}}
+
+###
+
+### List all loans (paged)
+GET {{host_address}}/loans?page=1&pageSize=5
+Authorization: Bearer {{token}}
+
+###
+
+### Make a payment to a loan
+POST {{host_address}}/loans/L001/payment
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "amount": 200,
+  "description": "Monthly payment"
+}
+
+
+### ********************* CLIENT ********************* ###
+
+### Create a new client
+POST {{host_address}}/clients
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "code": "C00101",
+  "identification": "123456789",
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+}
+
+###
+
+### Get client details by code
+GET {{host_address}}/clients/C001
+Authorization: Bearer {{token}}
+
+###
+
+
