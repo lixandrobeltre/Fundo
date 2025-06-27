@@ -20,11 +20,14 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
+    - name: Clean
+      run: dotnet clean
+      working-directory: backend/src
     - name: Restore dependencies
       run: dotnet restore
       working-directory: backend/src
     - name: Build
-      run: dotnet build --no-restore --force
+      run: dotnet build --no-restore
       working-directory: backend/src
     - name: Test
       run: dotnet test --verbosity normal
