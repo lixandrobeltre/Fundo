@@ -20,18 +20,22 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
-    - name: Clean solution
-      run: |
-        dotnet clean
-        find . -name "bin" -type d -exec rm -rf {} + 2>/dev/null || true
-        find . -name "obj" -type d -exec rm -rf {} + 2>/dev/null || true
+
+    - name: Install EF Core tools
+      run: dotnet tool install --global dotnet-ef
+
+    - name: Apply EF Core Migrations
+      run: dotnet ef database update --project Fundo.Infraestructure --startup-project backend/src/Fundo.Applications.WebApi
       working-directory: backend/src
+    
     - name: Restore dependencies
       run: dotnet restore
       working-directory: backend/src
+
     - name: Build
       run: dotnet build --no-restore
       working-directory: backend/src
+      
     - name: Test
       run: dotnet test --verbosity normal
       working-directory: backend/src
